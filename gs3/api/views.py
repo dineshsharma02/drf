@@ -1,3 +1,5 @@
+from ast import Try
+from functools import partial
 import json
 from django.shortcuts import render
 import io
@@ -49,4 +51,34 @@ def create_student(request):
         return JsonResponse(res)
 
 
+@csrf_exempt
+def update_student(request):
+    if request.method=="PUT":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        id = python_data.get('id')
+        # print(python_data)
+        stu = Student.objects.get(id=id)
+        serializer = StudentSerializer(stu,data=python_data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            res = {'msg':'data updated'}
+        else:
+            return JsonResponse(serializer.errors,safe=False)
+        # res_json = json.dumps(res)
+        return JsonResponse(res)
 
+
+@csrf_exempt
+def delete_student(request):
+    if request.method=="DELETE":
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        python_data = JSONParser().parse(stream)
+        id = python_data.get('id')
+        # print(python_data)
+        stu = Student.objects.get(id=id)
+        stu.delete()
+        res = {"msg":"data deleted"}
+        return JsonResponse(res)

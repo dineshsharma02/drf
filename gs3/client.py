@@ -1,3 +1,4 @@
+from django.http import response
 import requests
 import json
 
@@ -26,4 +27,32 @@ def create_student():
     response = r.json()
     print(response)
 
-create_student()
+# create_student()
+
+def update_student():
+    URL = "http://127.0.0.1:8000/updatestudent/"
+    data = {
+        'id':2,
+        'name':'updateduser',
+        # 'roll':1046,
+        'city':'naughty ghaziabad',
+    }
+    json_data = json.dumps(data)
+    r = requests.put(url=URL,data=json_data)
+    response = r.json()
+    print(response)
+
+# update_student()
+
+
+def delete_student(id):
+    URL = "http://127.0.0.1:8000/deletestudent/"
+    data = {
+        'id':id
+    }
+    json_data = json.dumps(data)
+    r = requests.delete(url=URL,data=json_data)
+    response = r.json()
+    print(response)
+
+delete_student(16)

@@ -20,5 +20,7 @@ from api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('studentapi/',views.student_api),
-    path('createstudent/',views.create_student)
+    path('createstudent/',views.create_student),
+    path('updatestudent/',views.update_student),
+    path('deletestudent/',views.delete_student),
 ]
